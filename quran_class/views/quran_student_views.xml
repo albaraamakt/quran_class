@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_class_student_list" model="ir.ui.view">
+        <field name="name">class.student.list</field>
+        <field name="model">class.student</field>
+        <field name="arch" type="xml">
+            <list string="Students">
+                <field name="name"/>
+                <field name="parent_partner_id"/>
+                <field name="parent_phone"/>
+                <field name="parent_email"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_class_student_form" model="ir.ui.view">
+        <field name="name">class.student.form</field>
+        <field name="model">class.student</field>
+        <field name="arch" type="xml">
+            <form string="Student">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger"
+                            invisible="active"/>
+                    <field name="active" invisible="1"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Student name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Guardian">
+                            <field name="parent_partner_id"/>
+                            <field name="parent_phone"/>
+                            <field name="parent_email"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Sessions" name="sessions">
+                            <field name="session_line_ids">
+                                <list string="Session Lines">
+                                    <field name="session_id"/>
+                                    <field name="attendance_status"/>
+                                    <field name="recitation_rating"/>
+                                    <field name="memorization_rating"/>
+                                    <field name="needs_review"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Assignments" name="assignments">
+                            <field name="assignment_ids">
+                                <list string="Assignments">
+                                    <field name="given_session_id"/>
+                                    <field name="assignment_type"/>
+                                    <field name="surah"/>
+                                    <field name="due_date"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Notes about this student..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_class_student" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">class.student</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

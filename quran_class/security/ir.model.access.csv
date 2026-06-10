@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_class_student_user,class.student.user,model_class_student,base.group_user,1,1,1,1
+access_class_session_user,class.session.user,model_class_session,base.group_user,1,1,1,1
+access_class_session_line_user,class.session.line.user,model_class_session_line,base.group_user,1,1,1,1
+access_class_assignment_user,class.assignment.user,model_class_assignment,base.group_user,1,1,1,1

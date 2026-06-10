@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_class_session_list" model="ir.ui.view">
+        <field name="name">class.session.list</field>
+        <field name="model">class.session</field>
+        <field name="arch" type="xml">
+            <list string="Sessions">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="topic"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'done'"
+                       decoration-muted="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_class_session_line_list" model="ir.ui.view">
+        <field name="name">class.session.line.list</field>
+        <field name="model">class.session.line</field>
+        <field name="arch" type="xml">
+            <list string="Session Lines">
+                <field name="session_id"/>
+                <field name="student_id"/>
+                <field name="attendance_status"/>
+                <field name="recitation_surah"/>
+                <field name="recitation_ayah_from"/>
+                <field name="recitation_ayah_to"/>
+                <field name="recitation_rating"/>
+                <field name="memorization_rating"/>
+                <field name="motivation_points"/>
+                <field name="needs_review"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_class_session_line_form" model="ir.ui.view">
+        <field name="name">class.session.line.form</field>
+        <field name="model">class.session.line</field>
+        <field name="arch" type="xml">
+            <form string="Session Line">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="session_id"/>
+                            <field name="student_id"/>
+                            <field name="attendance_status"/>
+                        </group>
+                        <group>
+                            <field name="recitation_rating"/>
+                            <field name="memorization_rating"/>
+                            <field name="needs_review"/>
+                        </group>
+                    </group>
+                    <group string="Recitation">
+                        <field name="recitation_surah"/>
+                        <field name="recitation_ayah_from"/>
+                        <field name="recitation_ayah_to"/>
+                    </group>
+                    <group string="Motivation and Reward">
+                        <field name="motivation_points"/>
+                        <field name="reward_note"/>
+                    </group>
+                    <group string="Mistakes">
+                        <field name="mistake_notes" nolabel="1"
+                               placeholder="Mistake notes..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_class_session_line" model="ir.actions.act_window">
+        <field name="name">Session Lines</field>
+        <field name="res_model">class.session.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('session_id', '=', active_id)]</field>
+        <field name="context">{'default_session_id': active_id}</field>
+    </record>
+
+    <record id="view_class_session_form" model="ir.ui.view">
+        <field name="name">class.session.form</field>
+        <field name="model">class.session</field>
+        <field name="arch" type="xml">
+            <form string="Session">
+                <header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_class_session_line)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-list"
+                                invisible="not id">
+                            <field name="line_count" widget="statinfo"
+                                   string="Session Lines"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Session number"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="topic"/>
+                        </group>
+                        <group>
+                            <field name="start_datetime"/>
+                            <field name="end_datetime"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Assignments" name="assignments">
+                            <field name="assignment_ids">
+                                <list string="Assignments" editable="bottom">
+                                    <field name="student_id"/>
+                                    <field name="assignment_type"/>
+                                    <field name="surah"/>
+                                    <field name="ayah_from"/>
+                                    <field name="ayah_to"/>
+                                    <field name="due_date"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Session notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_class_session" model="ir.actions.act_window">
+        <field name="name">Sessions</field>
+        <field name="res_model">class.session</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>
