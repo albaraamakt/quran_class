@@ -44,3 +44,26 @@ class ClassSession(models.Model):
     def _compute_line_count(self):
         for session in self:
             session.line_count = len(session.line_ids)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        sessions = super().create(vals_list)
+        students = self.env['class.student'].search([])
+        session_line_model = self.env['class.session.line']
+
+        lines_to_create = []
+        for session in sessions:
+            existing_student_ids = session.line_ids.student_id.ids
+            lines_to_create.extend(
+                {
+                    'session_id': session.id,
+                    'student_id': student.id,
+                }
+                for student in students
+                if student.id not in existing_student_ids
+            )
+
+        if lines_to_create:
+            session_line_model.create(lines_to_create)
+
+        return sessions
